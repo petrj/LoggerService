@@ -19,6 +19,12 @@ namespace LoggerService
             _logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
+        public NLogLoggingService(string configFilename)
+        {
+            NLog.LogManager.Configuration = new XmlLoggingConfiguration(configFilename);
+            _logger = NLog.LogManager.GetCurrentClassLogger();
+        }
+
         public void Debug(string message)
         {
             _logger.Debug(message);
