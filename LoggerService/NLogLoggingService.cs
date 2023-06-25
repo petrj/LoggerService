@@ -25,6 +25,11 @@ namespace LoggerService
             _logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
+        public NLogLoggingService(NLog.Logger logger)
+        {
+            _logger = logger;
+        }
+
         public void Debug(string message)
         {
             _logger.Debug(message);

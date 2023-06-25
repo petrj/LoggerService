@@ -7,9 +7,9 @@
     <RepositoryUrl>https://github.com/petrj/NugetLibrary</RepositoryUrl>
     <Description>Simple logging library</Description>
     <PackageProjectUrl>https://github.com/petrj/LoggerService</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
-    <FileVersion>1.0.0.2</FileVersion>
-    <PackageVersion>1.0.3</PackageVersion>
+    <AssemblyVersion>1.0.0.3</AssemblyVersion>
+    <FileVersion>1.0.0.3</FileVersion>
+    <PackageVersion>1.0.4</PackageVersion>
     <Authors>Petr Janousek</Authors>
   </PropertyGroup>
 
