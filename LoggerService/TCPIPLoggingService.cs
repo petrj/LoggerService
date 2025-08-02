@@ -66,9 +66,19 @@ namespace LoggerService
             Task.Run(async () => await Send(message, LoggingLevelEnum.Error));
         }
 
+        public void Error(string message)
+        {
+            Error(null, message);
+        }
+
         public void Info(string message)
         {
             Task.Run(async () => await Send(message, LoggingLevelEnum.Info));
+        }
+
+        public void Warn(string message)
+        {
+            Task.Run(async () => await Send(message, LoggingLevelEnum.Warn));
         }
     }
 }

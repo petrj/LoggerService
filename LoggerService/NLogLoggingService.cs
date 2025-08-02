@@ -25,6 +25,11 @@ namespace LoggerService
             _logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
+        public LoggingConfiguration GetConfiguration()
+        {
+            return NLog.LogManager.Configuration;
+        }
+
         public NLogLoggingService(NLog.Logger logger)
         {
             _logger = logger;
@@ -38,6 +43,11 @@ namespace LoggerService
         public void Error(Exception ex, string message = null)
         {
             _logger.Error(ex, message);
+        }
+
+        public void Error(string message)
+        {
+            Error(null, message);
         }
 
         public void Info(string message)

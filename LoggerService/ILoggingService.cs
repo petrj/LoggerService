@@ -8,6 +8,7 @@ namespace LoggerService
     {
         Debug = 1,
         Info = 5,
+        Warn = 7,
         Error = 9,
     }
 
@@ -16,5 +17,7 @@ namespace LoggerService
         void Debug(string message);
         void Info(string message);
         void Error(Exception ex, string message = null);
+        void Error(string message);
+        void Warn(string message);
     }
 }

@@ -48,6 +48,16 @@ namespace LoggerService
             Write(LoggingLevelEnum.Info, message);
         }
 
+        public void Warn(string message)
+        {
+            Write(LoggingLevelEnum.Warn, message);
+        }
+
+        public void Error(string message)
+        {
+            Error(null, message);
+        }
+
         public void Error(Exception ex, string message)
         {
             Write(LoggingLevelEnum.Error, $"{message} {ex}");

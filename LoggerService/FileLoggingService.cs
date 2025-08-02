@@ -39,7 +39,7 @@ namespace LoggerService
             try
             {
                 var logFolder = System.IO.Path.GetDirectoryName(LogFilename);
-                if(string.IsNullOrEmpty(logFolder))
+                if (string.IsNullOrEmpty(logFolder))
                 {
                     // app folder
                     logFolder = AppDomain.CurrentDomain.BaseDirectory;
@@ -57,7 +57,7 @@ namespace LoggerService
                     threadId = $"[{System.Threading.Thread.CurrentThread.ManagedThreadId}]";
                 }
                 catch
-                {}
+                { }
 
                 string msg = $"[{DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss.fff")}] {threadId} {level} {message}";
 
@@ -91,9 +91,19 @@ namespace LoggerService
             Write(LoggingLevelEnum.Info, message);
         }
 
+        public void Warn(string message)
+        {
+            Write(LoggingLevelEnum.Warn, message);
+        }
+
         public void Error(Exception ex, string message)
         {
             Write(LoggingLevelEnum.Error, $"{message} {ex}");
+        }
+
+        public void Error(string message)
+        {
+            Error(null, message);
         }
     }
 }
