@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,8 +7,8 @@
     <RepositoryUrl>https://github.com/petrj/NugetLibrary</RepositoryUrl>
     <Description>Simple logging library</Description>
     <PackageProjectUrl>https://github.com/petrj/LoggerService</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
     <PackageVersion>1.0.4</PackageVersion>
     <Authors>Petr Janousek</Authors>
   </PropertyGroup>
