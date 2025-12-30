@@ -1,7 +1,9 @@
 # PS script for listening NLOG messages when logging to UDP target using like this:
-#   <target name="udp" xsi:type="Network" address="udp4://10.0.0.2:9999" layout="${longdate} ${uppercase:${level}}|${threadid}|${message}"/>
 #
 # XML:
+#   NLOG config: <target name="udp" xsi:type="NetNLogViewerwork" address="udp4://10.0.0.2:9999" layout="${longdate} ${uppercase:${level}}|${threadid}|${message}"/>
+#
+#  output:
 #   <log4j:event logger="DVBTTelevizor.MAUI.LoggerProvider" level="INFO" timestamp="1767031021989" thread="36"> 
 #       <log4j:message>Device is already logged</log4j:message> 
 #           <log4j:properties>
@@ -9,8 +11,30 @@
 #               <log4j:data name="log4jmachinename" value="localhost"/>
 #           </log4j:properties> 
 #   </log4j:event>
+#
+# Text:
+#   NLOG config: <target name="udp" xsi:type="Network" address="udp4://10.0.0.2:9999" layout="${longdate} ${uppercase:${level}}|${threadid}|${message}"/>
+#
+#  output:
+#   2025-12-30 21:16:30.7134 DEBUG|9| ReorderData:                        70.58 ms
+#
 
-Param($Port, $IPFilter)
+Param($Port, $IPFilter, $Colors)
+
+
+$UseColors = $false
+if ([String]::IsNullOrWhiteSpace($Colors))
+{
+    Write-Host "Colors param not specififed, output will be monochromatic"
+} else
+{
+    $Colors = $Colors.Trim().ToLower()
+    if (($Colors -eq "true") -or ($Colors -eq "1") -or ($Colors -eq "yes") -or ($Colors -eq "y") -or ($Colors -eq "+"))
+       {
+            $UseColors = $true
+            Write-Host "Using colors"
+       }
+}
 
 if ([String]::IsNullOrWhiteSpace($Port))
 {
@@ -60,12 +84,33 @@ try
             $time = [DateTimeOffset]::FromUnixTimeMilliseconds($xml.event.timestamp).LocalDateTime
             $time = $time.ToString("yyyy-MM-dd HH:mm:ss.ffff")
 
-            Write-Host  ($sourceIP + ":" + $time + " INFO|?|" + $xml.event.message)
+            if ($UseColors)
+            {
+                Write-Host  ($sourceIP + ":" + $time + " INFO|?|") -NoNewLine -ForegroundColor Gray
+                Write-Host  $xml.event.message -ForegroundColor Yellow
+            } else
+            {
+                Write-Host  ($sourceIP + ":" + $time + " INFO|?|" + $xml.event.message)
+            }
         }
         catch [System.Xml.XmlException] 
         {
             # NOT xml
-            Write-Host ($sourceIP + ":" + $text);
+
+            if ($UseColors)
+            {
+                $IPAndTimeAndLevelAndThreadAndText = $text.Split("|",3)
+
+                Write-Host ($sourceIP + ":") -NoNewLine -ForegroundColor Gray
+                Write-Host $IPAndTimeAndLevelAndThreadAndText[0] -NoNewLine -ForegroundColor Gray
+                Write-Host "|" -NoNewLine -ForegroundColor Gray
+                Write-Host $IPAndTimeAndLevelAndThreadAndText[1] -NoNewLine -ForegroundColor Gray
+                Write-Host "|" -NoNewLine -ForegroundColor Gray
+                Write-Host $IPAndTimeAndLevelAndThreadAndText[2] -ForegroundColor Yellow
+            } else 
+            {               
+                Write-Host  ($sourceIP + ":" + $text)
+            }            
         }         
     }
 }
