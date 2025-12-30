@@ -1,5 +1,5 @@
 # PS script for listening NLOG messages when logging to UDP target using like this:
-#   <target name="udp" xsi:type="NLogViewer" address="udp4://10.0.0.2:9999" layout="${longdate} ${uppercase:${level}}|${threadid}|${message}"/>
+#   <target name="udp" xsi:type="Network" address="udp4://10.0.0.2:9999" layout="${longdate} ${uppercase:${level}}|${threadid}|${message}"/>
 #
 # all messages looks like this XML:
 #   <log4j:event logger="DVBTTelevizor.MAUI.LoggerProvider" level="INFO" timestamp="1767031021989" thread="36"> 
@@ -27,14 +27,13 @@ $udpClient = New-Object System.Net.Sockets.UdpClient($Port)
 $endpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, 0)
 
 Write-Host "Listening on UDP port $Port..."
-Write-Host "Press CTRL + C for exit"
 
 try 
 {
     while ($true) 
     {
         $bytes = $udpClient.Receive([ref]$endpoint)
-        $text  = [System.Text.Encoding]::UTF8.GetString($bytes)
+        $text  = [System.Text.Encoding]::UTF8.GetString($bytes)               
 
         $sourceIP   = $endpoint.Address.ToString()
 
@@ -46,22 +45,7 @@ try
             }
         }
 
-        # Inject missing namespace declaration
-        $fixedXml = $text -replace '<log4j:event\b','<log4j:event xmlns:log4j="urn:log4j"'
-
-        try 
-        {
-            $xml = [xml]$fixedXml
-                        
-            $time = [DateTimeOffset]::FromUnixTimeMilliseconds($xml.event.timestamp).LocalDateTime
-            $time = $time.ToString("dd.MM.yyyy HH:mm:ss")            
-
-            Write-Host  ("[" + $sourceIP + "] " + $time + " : " + $xml.event.message) 
-        }
-        catch 
-        {        
-            Write-Error $_.Exception
-        }
+        Write-Host ($sourceIP + ":" + $text);
     }
 }
 finally 
